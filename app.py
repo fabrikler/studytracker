@@ -7,10 +7,10 @@ import matplotlib.colors as mcolors
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
-PASSWORD = os.getenv("TRACKER_PASSWORD")
+PASSWORD = st.secrets["general"]["tracker_password"]
 
 if PASSWORD is None:
-    st.error("🚨 Passwort nicht gesetzt! Bitte Environment Variable TRACKER_PASSWORD einrichten.")
+    st.error("🚨 Passwort nicht gesetzt! Bitte in den Streamlit Secrets einrichten (Settings > Secrets).")
     st.stop()
 
 # Datei Pfad
@@ -169,6 +169,7 @@ if not df.empty:
             df.to_csv(DATA_FILE, index=False)
             st.success("✅ Eintrag gelöscht!")
             st.rerun()
-    else:
-        st.error("❌ Falsches Passwort! Eintrag wurde nicht gelöscht.")
+        else:
+            st.error("❌ Falsches Passwort! Eintrag wurde nicht gelöscht.")
 
+            
