@@ -44,7 +44,7 @@ tracker_password = "dein_passwort"
 
 Mehr Informationen findest du in der offiziellen [Streamlit Secrets Dokumentation](https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/secrets-management)
 
-Viel Spass beim lernen, the way is training 🤖
+Viel Spass beim lernen - the way is training 🤖
 
 ---
 
