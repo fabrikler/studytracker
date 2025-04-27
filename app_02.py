@@ -16,12 +16,12 @@ if os.path.exists(DATA_FILE):
     df['date'] = pd.to_datetime(df['date'], format='mixed')
     df['duration'] = pd.to_numeric(df['duration'], errors='coerce').fillna(0)
 else:
-    df = pd.DataFrame(columns=['date', 'duration', 'comment', 'category'])
+    df = pd.DataFrame(columns=['date', 'duration', 'comment'])
 
 st.title("🐍 Python Study Tracker")
 
 # --------- Heatmap ---------
-st.subheader("📅 Meine Sessions")
+st.subheader("📅 Deine Sessions")
 
 if not df.empty:
     df['date'] = pd.to_datetime(df['date'])
@@ -102,15 +102,13 @@ with st.form("session_form"):
     date = st.date_input("Datum", pd.to_datetime('today'))
     duration = st.number_input("Dauer (in Minuten)", min_value=1, step=1)
     comment = st.text_input("Kommentar (optional)")
-    category = st.selectbox("Kategorie", ["lesson", "homework", "project", "content"])   # <-- NEU
     submitted = st.form_submit_button("Speichern")
 
     if submitted:
         new_data = pd.DataFrame({
             "date": [pd.to_datetime(date)],
             "duration": [duration],
-            "comment": [comment],
-            "category": [category]
+            "comment": [comment]
         })
         df = pd.concat([df, new_data], ignore_index=True)
         df.to_csv(DATA_FILE, index=False)
@@ -118,7 +116,7 @@ with st.form("session_form"):
         st.rerun()
 
 # --------- Alle Sessions anzeigen und löschen ---------
-st.subheader("📋 Meine Logs")
+st.subheader("📋 Deine bisherigen Einträge")
 
 if not df.empty:
     # Saubere Tabelle vorbereiten
@@ -133,17 +131,8 @@ if not df.empty:
     total_minutes = df['duration'].sum()
     st.markdown(f"**🧠 Gesamtzeit gelernt: {int(total_minutes)} Minuten**")
 
-    # Zeit pro Kategorie berechnen
-    category_summary = df.groupby('category')['duration'].sum().sort_values(ascending=False)
-
-    # Schön anzeigen
-    st.markdown("**📚 Zeit pro Kategorie:**")
-    for category, minutes in category_summary.items():
-        st.markdown(f"- **{category.capitalize()}**: {int(minutes)} Minuten")
-
     st.write("---")
     st.write("🔴 **Eintrag löschen**")
-
 
     # Dropdown-Auswahl vorbereiten
     options = [f"{i}. {row['date']} – {row['comment']} ({int(row['duration'])} min)" for i, row in df_display.iterrows()]
