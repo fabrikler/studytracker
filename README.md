@@ -1,6 +1,8 @@
 # 🐍 Study Tracker App
 
 Ein persönlicher Tracker für meine Python-Lerneinheiten, gebaut mit Streamlit.
+Mit dieser kleinen Web-App kann ich meine Lernzeiten erfassen, Themenbereiche dokumentieren und meinen Fortschritt visuell nachverfolgen.
+Geplant ist, den Tracker in einem weiteren Update um zusätzliche Funktionen wie Auswertungen, Statistik und unterschiedliche Datenformate zu erweitern.
 
 ## Features
 - 📅 Kalender-Heatmap der Lerneinheiten
@@ -46,4 +48,4 @@ Viel Spass beim lernen 🤖
 
 ---
 
-© 2025 Carlos Meyer
+© 2025 Carlos Meyer 
