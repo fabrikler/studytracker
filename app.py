@@ -7,6 +7,8 @@ import matplotlib.colors as mcolors
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
+PASSWORD = "dharma"  
+
 # Datei Pfad
 DATA_FILE = 'data.csv'
 
@@ -102,20 +104,25 @@ with st.form("session_form"):
     date = st.date_input("Datum", pd.to_datetime('today'))
     duration = st.number_input("Dauer (in Minuten)", min_value=1, step=1)
     comment = st.text_input("Kommentar (optional)")
-    category = st.selectbox("Kategorie", ["lesson", "homework", "project", "content"])   # <-- NEU
+    category = st.selectbox("Kategorie", ["lesson", "homework", "project", "content"])
+    password_input = st.text_input("🔒 Passwort zum Speichern", type="password")  # <-- NEU
     submitted = st.form_submit_button("Speichern")
 
     if submitted:
-        new_data = pd.DataFrame({
-            "date": [pd.to_datetime(date)],
-            "duration": [duration],
-            "comment": [comment],
-            "category": [category]
-        })
-        df = pd.concat([df, new_data], ignore_index=True)
-        df.to_csv(DATA_FILE, index=False)
-        st.success("Session gespeichert!")
-        st.rerun()
+        if password_input == PASSWORD:
+            new_data = pd.DataFrame({
+                "date": [pd.to_datetime(date)],
+                "duration": [duration],
+                "comment": [comment],
+                "category": [category]
+            })
+            df = pd.concat([df, new_data], ignore_index=True)
+            df.to_csv(DATA_FILE, index=False)
+            st.success("✅ Session gespeichert!")
+            st.rerun()
+        else:
+            st.error("❌ Falsches Passwort! Session wurde nicht gespeichert.")
+
 
 # --------- Alle Sessions anzeigen und löschen ---------
 st.subheader("📋 Meine Logs")
@@ -149,12 +156,15 @@ if not df.empty:
     options = [f"{i}. {row['date']} – {row['comment']} ({int(row['duration'])} min)" for i, row in df_display.iterrows()]
     selected = st.selectbox("Wähle einen Eintrag zum Löschen", options)
 
+    password_delete = st.text_input("🔒 Passwort zum Löschen", type="password")
+    
     if st.button("Löschen"):
-        selected_index = int(selected.split(".")[0]) - 1
-        df = df.drop(df.index[selected_index])
-        df.to_csv(DATA_FILE, index=False)
-        st.success("Eintrag gelöscht!")
-        st.rerun()
-else:
-    st.info("Keine Einträge zum Anzeigen oder Löschen.")
+        if password_delete == PASSWORD:
+            selected_index = int(selected.split(".")[0]) - 1
+            df = df.drop(df.index[selected_index])
+            df.to_csv(DATA_FILE, index=False)
+            st.success("✅ Eintrag gelöscht!")
+            st.rerun()
+    else:
+        st.error("❌ Falsches Passwort! Eintrag wurde nicht gelöscht.")
 
