@@ -7,7 +7,11 @@ import matplotlib.colors as mcolors
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
-PASSWORD = "dharma"  
+PASSWORD = os.getenv("TRACKER_PASSWORD")
+
+if PASSWORD is None:
+    st.error("🚨 Passwort nicht gesetzt! Bitte Environment Variable TRACKER_PASSWORD einrichten.")
+    st.stop()
 
 # Datei Pfad
 DATA_FILE = 'data.csv'
