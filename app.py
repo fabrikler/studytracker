@@ -7,10 +7,9 @@ import matplotlib.colors as mcolors
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap
 
-try:
-    PASSWORD = st.secrets["tracker_password"]
-except Exception:
-    st.error("🚨 Passwort nicht gesetzt! Bitte in den Streamlit Secrets einrichten (Settings > Secrets).")
+PASSWORD = os.getenv("tracker_password")
+if not PASSWORD:
+    st.error("🚨 Passwort nicht gesetzt!")
     st.stop()
 
 # Datei Pfad
