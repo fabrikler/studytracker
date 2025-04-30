@@ -1,9 +1,6 @@
 # Ignore Streamlit secrets
 .streamlit/
 
-# Ignore local data file
-data.csv
-
 # Ignore Python cache files
 __pycache__/
 *.py[cod]
